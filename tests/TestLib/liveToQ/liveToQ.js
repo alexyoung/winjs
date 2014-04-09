@@ -83,17 +83,21 @@
         }
     }
 
-    function cleanUp() {
-        WinJS.Utilities.disposeSubTree(document.body);
+    function cleanUp(testName) {
         qunitDiv.style.zIndex = 0;
 
-        document.body.removeChild(qunitDiv);
-        document.body.removeChild(qunitTestFixtureDiv);
+        if (document.body.children.length > 2) {
+            for (var i = document.body.children.length - 1; i >= 0; i--) {
+                var child = document.body.children[i];
+                if (child === qunitDiv || child === qunitTestFixtureDiv) {
+                    continue;
+                }
 
-        document.body.innerHTML = "";
-
-        document.body.appendChild(qunitDiv);
-        document.body.appendChild(qunitTestFixtureDiv);
+                console.log("Test: " + testName + " - Incomplete cleanup!");
+                WinJS.Utilities.disposeSubTree(child);
+                document.body.removeChild(child);
+            }
+        }
     }
 
     QUnit.testStart(function testStart() {
@@ -101,7 +105,7 @@
     });
 
     QUnit.testDone(function testDone(args) {
-        cleanUp();
+        cleanUp(args.name);
 
         if (args.failed) {
             console.log(args.module + ": " + args.name + ", " + args.passed + "/" + args.total + ", " + args.runtime + "ms");
