@@ -48,6 +48,16 @@ Run the following and the WinJS JavaScript and CSS files will be put in the `bin
 grunt
 ```
 
+## Running the sample code
+
+There is a small hello world example in `app/`.  You can try it out by running:
+
+```
+grunt server
+```
+
+Then visiting `localhost:9000`.
+
 # Try WinJS
 Check out our online playground http://try.buildwinjs.com
 
